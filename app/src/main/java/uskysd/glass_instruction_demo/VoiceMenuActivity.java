@@ -30,7 +30,7 @@ import java.util.List;
  *
  * @see <a href="https://developers.google.com/glass/develop/gdk/touch">GDK Developer Guide</a>
  */
-public class StartActivity extends Activity {
+public class VoiceMenuActivity extends Activity {
 
     /**
      * {@link CardScrollView} to use as the main content view.
