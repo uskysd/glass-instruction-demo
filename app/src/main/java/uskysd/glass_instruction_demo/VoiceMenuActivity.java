@@ -1,21 +1,19 @@
 package uskysd.glass_instruction_demo;
 
-import com.google.android.glass.media.Sounds;
-import com.google.android.glass.view.WindowUtils;
-import com.google.android.glass.widget.CardBuilder;
-import com.google.android.glass.widget.CardScrollAdapter;
-import com.google.android.glass.widget.CardScrollView;
-
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+
+import com.google.android.glass.media.Sounds;
+import com.google.android.glass.view.WindowUtils;
+import com.google.android.glass.widget.CardBuilder;
+import com.google.android.glass.widget.CardScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +54,9 @@ public class VoiceMenuActivity extends Activity {
         // Keep the screen ON
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+
         mCardScroller = new CardScrollView(this);
+        mCardScroller.setBackgroundColor(Color.BLACK);
         mCardScroller.setAdapter(new CardAdapter(createCards(this)));
         // Handle the TAP event.
         mCardScroller.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -94,6 +94,14 @@ public class VoiceMenuActivity extends Activity {
     }
 
     @Override
+    public boolean onPreparePanel(int featureId, View view, Menu menu) {
+        if (featureId==WindowUtils.FEATURE_VOICE_COMMANDS) {
+            return mVoiceMenuEnabled;
+        }
+        return super.onPreparePanel(featureId, view, menu);
+    }
+
+    @Override
     public boolean onMenuItemSelected(int featureId, android.view.MenuItem item) {
         if (featureId==WindowUtils.FEATURE_VOICE_COMMANDS) {
             switch (item.getItemId()) {
@@ -109,6 +117,8 @@ public class VoiceMenuActivity extends Activity {
                 default:
                     return true;// No change
             }
+            // update the card
+            mCardScroller.setAdapter(new CardAdapter(createCards(this)));
             return true;
         }
         return super.onMenuItemSelected(featureId, item);
@@ -120,6 +130,8 @@ public class VoiceMenuActivity extends Activity {
     private List<CardBuilder> createCards(Context context) {
         ArrayList<CardBuilder> cards = new ArrayList<CardBuilder>();
         CardBuilder card = new CardBuilder(context, CardBuilder.Layout.TEXT).setText(mText);
+
+
         cards.add(card);
         return cards;
     }

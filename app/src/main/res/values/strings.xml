@@ -3,6 +3,7 @@
 
     <string name="app_name">glass-instruction-demo</string>
     <string name="title_activity_start">Find A Manual</string>
+    <string name="voice_trigger">Find a manual</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_from_qrcode">From QR-code</string>
     <string name="menu_from_list">From list</string>
