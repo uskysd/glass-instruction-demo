@@ -2,9 +2,11 @@ package uskysd.glass_instruction_demo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,6 +16,8 @@ import com.google.android.glass.media.Sounds;
 import com.google.android.glass.view.WindowUtils;
 import com.google.android.glass.widget.CardBuilder;
 import com.google.android.glass.widget.CardScrollView;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +37,13 @@ public class VoiceMenuActivity extends Activity {
     /**
      * {@link CardScrollView} to use as the main content view.
      */
+    private static final String TAG = VoiceMenuActivity.class.getSimpleName();
+    private static final String SCANNER = "com.google.zxing.client.android.SCAN";
     private CardScrollView mCardScroller;
 
     private MyMenu mMenu = MyMenu.FROM_QRCODE;
     private boolean mVoiceMenuEnabled = true;
-    private String mText = "Default";
+    private String mText = "Choose a way to find.";
 
 
     private static enum MyMenu {
@@ -107,6 +113,7 @@ public class VoiceMenuActivity extends Activity {
             switch (item.getItemId()) {
                 case R.id.menu_from_qrcode:
                     mText = "Find a manual from QR code";
+                    findManualFromQrcode();
                     break;
                 case R.id.menu_from_list:
                     mText = "Find a manual from list";
@@ -135,5 +142,32 @@ public class VoiceMenuActivity extends Activity {
         cards.add(card);
         return cards;
     }
+
+    private void findManualFromQrcode() {
+        // Integrator is not compatible with the glass
+//        IntentIntegrator intentIntegrator = new IntentIntegrator(this);
+//        intentIntegrator.initiateScan();
+
+        Intent intent = new Intent(SCANNER);
+        intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+        startActivityForResult(intent, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult called");
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (scanResult!=null) {
+            Log.d(TAG, "Scan result: "+scanResult.getContents().toString());
+        } else {
+            Log.d(TAG, "Scan result is null.");
+        }
+        Intent intent = new Intent(this, ManualViewActivity.class);
+        startActivity(intent);
+
+    }
+
+
 
 }
