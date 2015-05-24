@@ -54,4 +54,20 @@ public class CardAdapter extends CardScrollAdapter {
         }
         return AdapterView.INVALID_POSITION;
     }
+
+    public void addCard(CardBuilder card) {
+        mCards.add(card);
+        notifyDataSetChanged();
+    }
+
+    public void addCards(List<CardBuilder> cards) {
+        mCards.addAll(cards);
+        notifyDataSetChanged();
+    }
+
+    public void removeCard(int position) {
+        mCards.remove(position);
+        notifyDataSetChanged();
+    }
+
 }
