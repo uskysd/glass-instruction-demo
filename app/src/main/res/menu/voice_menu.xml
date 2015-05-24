@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_from_qrcode"
+        android:title="@string/menu_from_qrcode"
+        />
+    <item
+        android:id="@+id/menu_from_list"
+        android:title="@string/menu_from_list"
+        />
+    <item
+        android:id="@+id/menu_from_picture"
+        android:title="@string/menu_from_picture"
+        />
+
+</menu>
